@@ -1,0 +1,88 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ChatAgent MVP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: dark; }
+    body { background: #000; color: #0f0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    a, button { color: #0f0; }
+    .container{ max-width: 1100px; margin: 2rem auto; padding: 1rem; border: 1px solid #0a0; border-radius: 8px;}
+    .row{ display:flex; gap:1rem}
+    .col{ flex:1}
+    textarea{ width:100%; min-height: 6rem; background:#020; color:#0f0; border:1px solid #060; padding:.5rem}
+    input{ background:#020; color:#0f0; border:1px solid #060; padding:.4rem}
+    .log{ background:#010; border:1px solid #050; padding: .5rem; height: 300px; overflow:auto; white-space: pre-wrap;}
+    .badge{ border:1px solid #0a0; padding:.15rem .4rem; border-radius:5px; }
+    .btn{ border:1px solid #0a0; padding:.3rem .6rem; background:#030; cursor:pointer}
+    .list{ border:1px solid #060; padding:.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ChatAgent <span class="badge">MVP</span></h1>
+    <div class="row">
+      <div class="col">
+        <h3>Projekty</h3>
+        <div id="projects" class="list"></div>
+        <div style="margin-top:.5rem">
+          <input id="newTitle" placeholder="Název projektu" />
+          <input id="newSlug" placeholder="slug" />
+          <button class="btn" onclick="createProject()">Vytvořit</button>
+        </div>
+      </div>
+      <div class="col">
+        <h3>Chat</h3>
+        <div id="chat" class="log"></div>
+        <textarea id="msg" placeholder="Napiš požadavek..."></textarea>
+        <button class="btn" onclick="sendMsg()">Odeslat</button>
+      </div>
+      <div class="col">
+        <h3>Vnitřní pracovník</h3>
+        <div id="inner" class="log"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+let currentProjectId = null;
+
+async function refreshProjects(){
+  const r = await fetch('/api/projects');
+  const data = await r.json();
+  const el = document.getElementById('projects');
+  el.innerHTML = '';
+  data.forEach(p=>{
+    const d = document.createElement('div');
+    d.innerHTML = `<a href="#" onclick="openProject(${p.id})">${p.title}</a> <span class="badge">$${p.max_usd.toFixed(2)}</span>`;
+    el.appendChild(d);
+  });
+}
+async function createProject(){
+  const title = document.getElementById('newTitle').value;
+  const slug = document.getElementById('newSlug').value;
+  const r = await fetch('/api/projects', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({title, slug})});
+  await refreshProjects();
+}
+async function openProject(id){
+  currentProjectId = id;
+  document.getElementById('chat').innerText='';
+  document.getElementById('inner').innerText='';
+  const ws = new WebSocket(`ws://${location.host}/ws/inner/${id}`);
+  ws.onmessage = (evt)=>{ document.getElementById('inner').innerText += evt.data; }
+  await fetch(`/api/projects/${id}/subscribe`, {method:'POST'});
+}
+async function sendMsg(){
+  if(!currentProjectId){ alert('Vyber projekt'); return; }
+  const txt = document.getElementById('msg').value;
+  document.getElementById('msg').value='';
+  const r = await fetch(`/api/projects/${currentProjectId}/chat`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({text: txt})});
+  const data = await r.json();
+  document.getElementById('chat').innerText += "\\n" + data.reply;
+}
+refreshProjects();
+</script>
+</body>
+</html>
