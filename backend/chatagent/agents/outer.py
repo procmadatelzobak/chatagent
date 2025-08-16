@@ -1,28 +1,40 @@
-
-from ..settings import settings
 from ..db.core import get_session
-from ..db.models import Project, Message, Task, Memory
-from .shared import budget_ok, add_message, add_task, summarize_context
+from ..db.models import Project
+from .shared import add_message, add_task, summarize_context
 
-SYSTEM_PROMPT = """Jsi Vnější pracovník (facilitátor). Tvůj úkol:
-- Vést stručný, efektivní rozhovor s uživatelem (česky).
-- Udržovat úsporný kontext: používej stručné shrnutí projektu a vytažené body z paměti (retrieval).
-- Rozdělit práci na malé úkoly (Tasks) pro Vnitřního pracovníka.
-- Každý úkol má být: titul, cíl, definice hotovo, test/spouštěcí instrukce.
-- Šetři tokeny: opakující se instrukce dej do paměťových dokumentů a pouze na ně odkazuj.
-"""
+SYSTEM_PROMPT = "Jsi vnější pracovník. Buď stručný, děl úkoly na malé dávky."
 
 async def handle_user_input(project_id: int, user_text: str, provider) -> str:
-    # Very light stub that echoes a plan and enqueues a dummy task
+    text_lower = user_text.lower()
     with get_session() as s:
-        proj = s.get(Project, project_id)
+        project = s.get(Project, project_id)
+        if project is None:
+            project = Project(id=project_id, name=f"Project {project_id}")
+            s.add(project)
+            s.commit()
         add_message(s, project_id, "user", user_text)
-        # Summarize short context
+        if "hello world" in text_lower:
+            add_message(s, project_id, "outer", "Vytvořím hello.py a spustím ho.")
+            add_task(
+                s,
+                project_id,
+                "Create hello.py",
+                'create_file hello.py print("Hello, world!")',
+            )
+            add_task(
+                s,
+                project_id,
+                "Run hello.py",
+                "run_python hello.py",
+            )
+            return "Plán vytvořen. Spouštím vnitřního pracovníka."
         summary = summarize_context(s, project_id)
-        system = SYSTEM_PROMPT + f"\n# Kontext:\n{summary}\n"
-        # For MVP: static reply and create a task
-        reply = "Rozumím. Vytvářím počáteční úkol: inicializace repozitáře a README."
+    messages = [{"role": "user", "content": user_text}]
+    data = await provider.chat(messages, system=SYSTEM_PROMPT + "\n" + summary)
+    if "candidates" in data:
+        reply = data["candidates"][0].get("content", "")
+    else:
+        reply = data["choices"][0]["message"]["content"]
+    with get_session() as s:
         add_message(s, project_id, "outer", reply)
-        add_task(s, project_id, "Inicializace projektu", "queued", input="init repo + README")
-        s.commit()
     return reply

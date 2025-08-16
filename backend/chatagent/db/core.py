@@ -1,14 +1,13 @@
-
 from sqlmodel import SQLModel, create_engine, Session
-from pathlib import Path
-from .models import *
 from ..settings import settings
 
-DB_PATH = settings.data_root / "chatagent.sqlite3"
-engine = create_engine(f"sqlite:///{DB_PATH}", connect_args={"check_same_thread": False})
+engine = create_engine(
+    f"sqlite:///{settings.db}", connect_args={"check_same_thread": False}
+)
 
-def init_db():
+def init_db() -> None:
+    settings.db.parent.mkdir(parents=True, exist_ok=True)
     SQLModel.metadata.create_all(engine)
 
-def get_session():
+def get_session() -> Session:
     return Session(engine)
