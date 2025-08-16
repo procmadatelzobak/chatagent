@@ -30,8 +30,9 @@ async def start_worker():
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
-    from .web.templates.index import html as tmpl
-    return tmpl()
+       return load_index_html()
+
+    
 
 # Serve template without Jinja for MVP
 from pathlib import Path
@@ -63,14 +64,17 @@ def subscribe(pid: int):
 
 @router.post("/projects/{pid}/chat")
 async def chat(pid: int, payload: dict):
-    text = payload.get("text","")
-    prov = GoogleProvider()
+    text = payload.get("text", "")
+    model = payload.get("model")
+    prov = GoogleProvider(model=model)
+
+   
     reply = await outer.handle_user_input(pid, text, prov)
     return {"reply": reply}
 
 app.include_router(router, prefix="/api")
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/ui", response_class=HTMLResponse)
 async def ui():
     return load_index_html()
 
