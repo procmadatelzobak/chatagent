@@ -1,34 +1,59 @@
-
-import asyncio, os
+import asyncio
+import subprocess
+import sys
+from pathlib import Path
+from sqlmodel import select
 from ..settings import settings
 from ..db.core import get_session
-from ..db.models import Task, Project, Message
-from ..tools import shell, git
-from .shared import add_message, set_task_status
+from ..db.models import Task
 
-PROJECTS_DIR = settings.projects_root
+WORKSPACE = settings.workspace
 
-async def worker_loop():
-    """Poll tasks and execute simple actions (MVP)."""
+async def worker_loop() -> None:
     while True:
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(1)
         with get_session() as s:
-            task = s.exec(Task.select().where(Task.status=="queued")).first()
+            task = s.exec(
+                select(Task).where(Task.status == "queued").order_by(Task.created_at)
+            ).first()
             if not task:
                 continue
-            set_task_status(s, task.id, "running")
-            proj = s.get(Project, task.project_id)
-            proj_dir = PROJECTS_DIR / proj.slug
-            proj_dir.mkdir(parents=True, exist_ok=True)
-        # Execute: init git, create README
-        readme = proj_dir / "README.md"
-        if not readme.exists():
-            readme.write_text(f"# {proj.title}\n\nInicializováno ChatAgent MVP.\n")
-        # git init & commit
-        async for out in git.git_init(str(proj_dir)):
-            add_message(get_session(), task.project_id, "inner", out)
-        async for out in git.git_commit_all(str(proj_dir), "chore: initial commit with README"):
-            add_message(get_session(), task.project_id, "inner", out)
+            task.status = "running"
+            s.add(task)
+            s.commit()
+            task_id = task.id
+            project_id = task.project_id
+            task_input = task.input
+        proj_dir = WORKSPACE / str(project_id)
+        proj_dir.mkdir(parents=True, exist_ok=True)
+        status = "done"
+        result = ""
+        try:
+            if task_input.startswith("create_file "):
+                _, path, content = task_input.split(" ", 2)
+                file_path = proj_dir / path
+                file_path.parent.mkdir(parents=True, exist_ok=True)
+                file_path.write_text(content)
+                result = "created"
+            elif task_input.startswith("run_python "):
+                _, path = task_input.split(" ", 1)
+                file_path = proj_dir / path
+                proc = subprocess.run(
+                    [sys.executable, str(file_path)],
+                    capture_output=True,
+                    text=True,
+                    cwd=proj_dir,
+                )
+                result = proc.stdout + proc.stderr
+            else:
+                status = "failed"
+                result = "Unknown task input"
+        except Exception as e:
+            status = "failed"
+            result = str(e)
         with get_session() as s:
-            set_task_status(s, task.id, "done")
-            add_message(s, task.project_id, "inner", "Úkol hotov: inicializace provedena.")
+            t = s.get(Task, task_id)
+            t.status = status
+            t.result = result
+            s.add(t)
+            s.commit()
