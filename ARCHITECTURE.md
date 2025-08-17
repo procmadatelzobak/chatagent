@@ -17,3 +17,12 @@ A deterministic mode seeds the scheduler's random number generator so that
 stochastic events produce reproducible results. Tests can replay the same
 sequence of events by constructing a scheduler with the same seed and feeding it
 the same events.
+
+## Scheduler Flow
+
+```mermaid
+flowchart LR
+    Start -->|tick| Advance[Advance Time]
+    Advance --> Process[Process Events]
+    Process --> Update[Update World]
+```
