@@ -17,6 +17,14 @@ chatagent serve
 # open http://localhost:8080
 ```
 
+## Web UI
+
+A minimal control panel is served at `http://localhost:8080/`.
+It allows selecting a scenario, playing or pausing the simulation,
+stepping through 1/10/100 ticks, and viewing the current tick and
+snapshot of the selected agent or world. The page uses vanilla
+HTML/JS and is delivered directly by FastAPI.
+
 ## Notes
 
 - This is a minimal skeleton: outer worker enqueues a dummy init task; inner worker initializes a git repo and README.
