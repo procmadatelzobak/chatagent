@@ -1,5 +1,5 @@
-from .store import MemoryItem, MemoryStore, InMemoryStore
-from .metrics import compute_metrics, Evaluator
+from .metrics import Evaluator, compute_metrics
+from .store import InMemoryStore, MemoryItem, MemoryStore
 
 __all__ = [
     "MemoryItem",

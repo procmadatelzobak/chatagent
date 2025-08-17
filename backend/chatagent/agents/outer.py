@@ -1,7 +1,7 @@
 from ..db.core import get_session
 from ..db.models import Project
-from .shared import add_message, add_task, summarize_context
 from ..services.llm import LLMClient
+from .shared import add_message, add_task, summarize_context
 
 SYSTEM_PROMPT = "Jsi vnější pracovník. Buď stručný, děl úkoly na malé dávky."
 

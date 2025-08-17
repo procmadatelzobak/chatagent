@@ -20,7 +20,12 @@ class MemoryStore(ABC):
     """Interface for conversation memory stores."""
 
     @abstractmethod
-    def add(self, speaker: str, content: str, metadata: Dict[str, Any] | None = None) -> None:
+    def add(
+        self,
+        speaker: str,
+        content: str,
+        metadata: Dict[str, Any] | None = None,
+    ) -> None:
         """Persist a conversation turn."""
 
     @abstractmethod
@@ -34,7 +39,12 @@ class InMemoryStore(MemoryStore):
     def __init__(self) -> None:
         self._items: List[MemoryItem] = []
 
-    def add(self, speaker: str, content: str, metadata: Dict[str, Any] | None = None) -> None:
+    def add(
+        self,
+        speaker: str,
+        content: str,
+        metadata: Dict[str, Any] | None = None,
+    ) -> None:
         self._items.append(
             MemoryItem(
                 timestamp=datetime.utcnow(),

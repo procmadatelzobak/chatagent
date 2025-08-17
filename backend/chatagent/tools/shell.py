@@ -1,8 +1,17 @@
 
-import asyncio, shlex, os, pty, select, fcntl, termios, tty
+import asyncio
+import fcntl
+import os
+import pty
 from typing import AsyncIterator
 
-async def run_shell(cmd: str, cwd: str | None = None, env: dict | None = None, timeout: int = 600) -> AsyncIterator[str]:
+
+async def run_shell(
+    cmd: str,
+    cwd: str | None = None,
+    env: dict | None = None,
+    timeout: int = 600,
+) -> AsyncIterator[str]:
     """Run a command in a PTY and yield output chunks."""
     master_fd, slave_fd = pty.openpty()
     pid = os.fork()

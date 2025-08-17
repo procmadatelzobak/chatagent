@@ -1,7 +1,9 @@
 from time import sleep
+
 import pytest
-from sqlmodel import select
 from fastapi.testclient import TestClient
+from sqlmodel import select
+
 from chatagent.app import app
 from chatagent.db.core import get_session, init_db
 from chatagent.db.models import Task

@@ -1,5 +1,5 @@
-from chatagent.core.rule_based_agent import RuleBasedAgent
 from chatagent.core.engine.conversation import ConversationEngine
+from chatagent.core.rule_based_agent import RuleBasedAgent
 
 
 def test_conversation_engine_rule_based():

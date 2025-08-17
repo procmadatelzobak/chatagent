@@ -1,13 +1,12 @@
 import asyncio
-import pytest
 
-from chatagent.agents import outer
-from chatagent.services.llm import EchoLLMClient
+import pytest
 from sqlmodel import delete
 
+from chatagent.agents import outer
 from chatagent.db.core import get_session, init_db
-from chatagent.db.models import Message, Memory, Task
-from chatagent.settings import settings
+from chatagent.db.models import Memory, Message, Task
+from chatagent.services.llm import EchoLLMClient
 
 
 @pytest.mark.skip("requires writable database")
