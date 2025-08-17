@@ -48,3 +48,7 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
+
+[tool.setuptools.packages.find]
+include = ["chatagent", "app*", "adapters*"]
+exclude = ["data*", "systemd*", "tests*"]
