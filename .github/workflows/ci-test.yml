@@ -12,12 +12,11 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
           cache-dependency-path: backend/pyproject.toml
-      - run: pip install pytest
-      - run: pip install -e backend || true
-      - run: pytest || true
+      - run: pip install -r backend/requirements-test.txt
+      - run: PYTHONPATH=backend pytest --cov=app --cov-report=term --cov-report=xml --cov-fail-under=40

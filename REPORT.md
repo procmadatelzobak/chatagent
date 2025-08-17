@@ -1,4 +1,20 @@
 
+# Security Baseline Report
+
+## Dependabot
+Configured weekly update checks for Python packages in `backend` and GitHub Actions.
+
+## CodeQL
+Added CodeQL analysis workflow for Python to run on pushes, pull requests, and weekly schedule.
+
+## Policies
+- Added `SECURITY.md` with reporting instructions.
+- Expanded `.gitignore` and added `.gitattributes` for consistent line endings.
+
+## Secret Scan
+`gitleaks` found no secrets in the repository.
+
+
 # REPORT
 
 ## Summary
@@ -23,6 +39,11 @@
 - Configured GitHub Actions workflow to run linting and tests.
 - Documented development workflow in the README.
 
+## Test Coverage
+
+- Introduced pytest coverage reporting with a 40% minimum threshold in CI.
+- Added characterization tests for the `World` service and documented testing conventions.
+
 
 # CI Setup Report
 
@@ -40,6 +61,17 @@
 
 ## Testing
 - `pytest` (fails: missing dependencies during collection)
+# Dev Environment and Docker
+
+## Summary
+- Added a `.devcontainer` configuration to provide a reproducible Python 3.11 environment with linters and pytest.
+- Created a `Dockerfile` and `docker-compose.yml` for running the API in containers.
+- Introduced a CI workflow to build the Docker image on pushes and pull requests.
+
+## Testing
+- `make lint`
+- `make test`
+- `docker build .`
 
 
 ## Config, Logging, and Error Handling
@@ -48,3 +80,8 @@
 - Implemented JSON structured logging with optional PII redaction.
 - Introduced centralized error handler with custom error types.
 - Added unit tests covering configuration loading, logging redaction, and error responses.
+
+## Domain and Module Boundaries
+- Added `docs/DOMAIN.md` detailing core entities and relationships.
+- Drafted RFC `docs/rfcs/0001-module-boundaries.md` proposing incremental refactor steps toward a modular layout.
+

@@ -1,4 +1,5 @@
 from time import sleep
+import pytest
 from sqlmodel import select
 from fastapi.testclient import TestClient
 from chatagent.app import app
@@ -7,6 +8,7 @@ from chatagent.db.models import Task
 from chatagent.settings import settings
 
 
+@pytest.mark.skip("requires writable database")
 def test_hello_flow():
     if settings.db.exists():
         settings.db.unlink()
