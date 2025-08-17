@@ -1,14 +1,18 @@
 import httpx
+
 from ..settings import settings
 
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
+
 
 class GoogleProvider:
     def __init__(self, model: str | None = None):
         self.model = model or settings.model_default
         self.api_key = settings.google_api_key
 
-    async def chat(self, messages: list[dict], tools=None, system: str | None = None) -> dict:
+    async def chat(
+        self, messages: list[dict], tools=None, system: str | None = None
+    ) -> dict:
         if not self.api_key:
             text = "(stub)"
             if messages:

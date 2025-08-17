@@ -1,5 +1,7 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     db: Path = Path("~/.chatagent/chatagent.sqlite3").expanduser()
@@ -14,6 +16,7 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
     )
+
 
 settings = Settings()
 settings.workspace.mkdir(parents=True, exist_ok=True)

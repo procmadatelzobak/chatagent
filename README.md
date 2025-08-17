@@ -1,4 +1,3 @@
-
 # ChatAgent MVP
 
 - Backend: FastAPI
@@ -6,15 +5,33 @@
 - Projects workspace: `/home/sandbox/chatagent/projects`
 - Provider: Google Gemini (stubs) — set `CHATAGENT_GOOGLE_API_KEY` in `.env`
 
-## Quickstart
+## Installation
 
 ```bash
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -e .
-echo 'CHATAGENT_GOOGLE_API_KEY=YOUR_KEY' > .env
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .[dev]
+cp .env.example .env  # add your Google API key
+```
+
+## Development
+
+```bash
+pre-commit install
+pre-commit run --all-files  # lint + type check
+```
+
+## Running
+
+```bash
 chatagent serve
 # open http://localhost:8080
+```
+
+## Tests
+
+```bash
+pytest
 ```
 
 ## Notes

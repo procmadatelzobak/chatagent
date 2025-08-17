@@ -1,4 +1,5 @@
 __pycache__/
 *.pyc
-backend/.env
-backend/.venv/
+.env
+.venv/
+chatagent.egg-info/

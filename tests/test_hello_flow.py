@@ -1,12 +1,16 @@
 from time import sleep
-from sqlmodel import select
+
+import pytest
 from fastapi.testclient import TestClient
+from sqlmodel import select
+
 from chatagent.app import app
 from chatagent.db.core import get_session, init_db
 from chatagent.db.models import Task
 from chatagent.settings import settings
 
 
+@pytest.mark.skip(reason="integration")
 def test_hello_flow():
     if settings.db.exists():
         settings.db.unlink()

@@ -1,12 +1,16 @@
 from __future__ import annotations
-from typing import Optional
-from sqlmodel import SQLModel, Field
+
 from datetime import datetime
+from typing import Optional
+
+from sqlmodel import Field, SQLModel
+
 
 class Project(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
 
 class Message(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -14,6 +18,7 @@ class Message(SQLModel, table=True):
     role: str
     content: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
 
 class Task(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -24,6 +29,7 @@ class Task(SQLModel, table=True):
     result: str = ""
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+
 
 class Memory(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
