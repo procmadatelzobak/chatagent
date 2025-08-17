@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Event",
+  "type": "object",
+  "properties": {
+    "timestamp": {"type": "number"},
+    "agent_id": {"type": "string"},
+    "intent": {"$ref": "intent.schema.json"}
+  },
+  "required": ["timestamp", "agent_id", "intent"],
+  "additionalProperties": false
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorldState",
+  "type": "object",
+  "properties": {
+    "description": {"type": "string"},
+    "agents": {
+      "type": "array",
+      "items": {"$ref": "agent.schema.json"}
+    }
+  },
+  "required": ["description", "agents"],
+  "additionalProperties": false
+}

@@ -8,6 +8,10 @@ from .db.core import init_db
 from .agents.inner import worker_loop
 from .agents import outer
 from .providers.google import GoogleProvider
+from app.services.validation import (
+    ScenarioValidationError,
+    validate_scenario_file,
+)
 
 app = FastAPI(title="ChatAgent MVP", version="0.1.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -15,6 +19,11 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 @app.on_event("startup")
 async def startup() -> None:
     init_db()
+    scenario_path = Path(__file__).resolve().parents[1] / "data" / "scenario_example.json"
+    try:
+        validate_scenario_file(scenario_path)
+    except ScenarioValidationError as exc:
+        raise RuntimeError(f"Invalid scenario file: {exc}") from exc
     asyncio.create_task(worker_loop())
 
 def load_index_html() -> str:
@@ -43,5 +52,15 @@ async def chat(payload: dict) -> dict:
     provider = GoogleProvider(model=model)
     reply = await outer.handle_user_input(project_id, text, provider)
     return {"reply": reply}
+
+
+@router.get("/validate-scenario")
+async def validate_scenario() -> dict:
+    scenario_path = Path(__file__).resolve().parents[1] / "data" / "scenario_example.json"
+    try:
+        validate_scenario_file(scenario_path)
+    except ScenarioValidationError as exc:
+        return {"valid": False, "error": str(exc)}
+    return {"valid": True}
 
 app.include_router(router, prefix="/api")
