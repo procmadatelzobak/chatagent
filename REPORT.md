@@ -85,3 +85,8 @@ Added CodeQL analysis workflow for Python to run on pushes, pull requests, and w
 - Added `docs/DOMAIN.md` detailing core entities and relationships.
 - Drafted RFC `docs/rfcs/0001-module-boundaries.md` proposing incremental refactor steps toward a modular layout.
 
+
+## Memory and Metrics
+- Introduced in-memory conversation store with timestamp, speaker, content, and metadata.
+- Added metric computation for turns, average message length, and goal achievement via pluggable evaluator.
+- Covered basic flow with unit test simulating a short conversation.
