@@ -73,6 +73,15 @@ Added CodeQL analysis workflow for Python to run on pushes, pull requests, and w
 - `make test`
 - `docker build .`
 
+
+## Config, Logging, and Error Handling
+
+- Added `config.toml` and extended `Settings` to load from file and environment.
+- Implemented JSON structured logging with optional PII redaction.
+- Introduced centralized error handler with custom error types.
+- Added unit tests covering configuration loading, logging redaction, and error responses.
+
 ## Domain and Module Boundaries
 - Added `docs/DOMAIN.md` detailing core entities and relationships.
 - Drafted RFC `docs/rfcs/0001-module-boundaries.md` proposing incremental refactor steps toward a modular layout.
+
