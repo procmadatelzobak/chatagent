@@ -1,0 +1,15 @@
+{
+  "world": {
+    "description": "Invalid world",
+    "agents": [
+      {"id": "a1", "name": "Alice", "role": "user"}
+    ]
+  },
+  "events": [
+    {
+      "timestamp": "zero",
+      "agent_id": "a1",
+      "intent": {"name": "greet"}
+    }
+  ]
+}

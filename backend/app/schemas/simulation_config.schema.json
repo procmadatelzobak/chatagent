@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SimulationConfig",
+  "type": "object",
+  "properties": {
+    "world": {"$ref": "world_state.schema.json"},
+    "events": {
+      "type": "array",
+      "items": {"$ref": "event.schema.json"}
+    }
+  },
+  "required": ["world", "events"],
+  "additionalProperties": false
+}
