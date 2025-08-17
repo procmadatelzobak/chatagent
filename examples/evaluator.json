@@ -1,0 +1,36 @@
+{
+  "world": {
+    "description": "Conversation with evaluator",
+    "agents": [
+      {"id": "u1", "name": "User", "role": "user"},
+      {"id": "b1", "name": "Bot", "role": "assistant"},
+      {"id": "e1", "name": "Judge", "role": "evaluator"}
+    ]
+  },
+  "events": [
+    {
+      "timestamp": 0,
+      "agent_id": "u1",
+      "intent": {
+        "name": "inc",
+        "parameters": {"amount": 1}
+      }
+    },
+    {
+      "timestamp": 1,
+      "agent_id": "b1",
+      "intent": {
+        "name": "inc",
+        "parameters": {"amount": 2}
+      }
+    },
+    {
+      "timestamp": 2,
+      "agent_id": "e1",
+      "intent": {
+        "name": "rand",
+        "parameters": {"max_value": 1}
+      }
+    }
+  ]
+}
