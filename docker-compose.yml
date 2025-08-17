@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - CHATAGENT_GOOGLE_API_KEY=${CHATAGENT_GOOGLE_API_KEY}
+    volumes:
+      - ./data:/app/backend/data
+    command: chatagent serve --host 0.0.0.0 --port 8080
