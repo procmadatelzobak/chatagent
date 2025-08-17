@@ -14,4 +14,6 @@ Introduced configuration options to improve testability and responsiveness:
 - Added a passing smoke test and documented how to run the suite.
 - Updated `.gitignore` and cleaned up temporary files.
 - Refreshed `README.md` with docs links and CI badge.
+- Restricted package discovery to `app` and `chatagent` for successful editable installs.
+- Included `pytest-cov` in development extras so coverage flags are recognized.
 
