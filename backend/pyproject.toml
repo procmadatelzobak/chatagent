@@ -36,7 +36,8 @@ chatsim = "chatagent.sim_cli:app"
 dev = [
     "black>=24.0",
     "ruff>=0.1.0",
-    "pytest>=7.0"
+    "pytest>=7.0",
+    "pytest-cov>=4.0"
 ]
 
 [tool.black]
@@ -50,5 +51,7 @@ line-length = 88
 select = ["E", "F", "I"]
 
 [tool.setuptools.packages.find]
+# Include the lightweight adapter utilities so tests can import them.
+include = ["app*", "chatagent*", "adapters*"]
 include = ["chatagent", "app*", "adapters*"]
 exclude = ["data*", "systemd*", "tests*"]

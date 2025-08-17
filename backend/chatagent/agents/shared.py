@@ -8,6 +8,7 @@ def add_message(session, project_id: int, role: str, content: str) -> None:
     session.add(msg)
     session.commit()
 
+
 def add_task(
     session, project_id: int, title: str, input: str, status: str = "queued"
 ) -> None:

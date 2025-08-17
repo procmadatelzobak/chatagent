@@ -14,8 +14,6 @@ def compute_metrics(
 
     messages = list(store.items())
     turns = len(messages)
-    avg_length = (
-        sum(len(m.content) for m in messages) / turns if turns > 0 else 0.0
-    )
+    avg_length = sum(len(m.content) for m in messages) / turns if turns > 0 else 0.0
     goal_reached = evaluator(messages)
     return {"turns": turns, "avg_length": avg_length, "goal_reached": goal_reached}

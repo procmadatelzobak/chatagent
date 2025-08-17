@@ -1,6 +1,5 @@
 import asyncio
 
-import pytest
 from sqlmodel import delete
 
 from chatagent.agents import outer
@@ -18,9 +17,5 @@ def test_llm_stub_echo():
         s.commit()
     llm = EchoLLMClient()
     reply = asyncio.run(outer.handle_user_input(1, "Test", llm))
-    expected = (
-        outer.SYSTEM_PROMPT
-        + "\n"
-        + "Paměť:\n\n\nPoslední zprávy:\nuser: Test"
-    )
+    expected = outer.SYSTEM_PROMPT + "\n" + "Paměť:\n\n\nPoslední zprávy:\nuser: Test"
     assert reply == "(echo) " + expected

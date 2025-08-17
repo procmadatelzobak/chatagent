@@ -6,9 +6,7 @@ from .shared import add_message, add_task, summarize_context
 SYSTEM_PROMPT = "Jsi vnější pracovník. Buď stručný, děl úkoly na malé dávky."
 
 
-async def handle_user_input(
-    project_id: int, user_text: str, llm: LLMClient
-) -> str:
+async def handle_user_input(project_id: int, user_text: str, llm: LLMClient) -> str:
     text_lower = user_text.lower()
     with get_session() as s:
         project = s.get(Project, project_id)

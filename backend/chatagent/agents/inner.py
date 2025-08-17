@@ -8,6 +8,7 @@ from ..db.core import get_session
 from ..db.models import Task
 from ..settings import settings
 
+
 async def worker_loop() -> None:
     while True:
         # Poll for queued tasks at a configurable interval.  A shorter poll
