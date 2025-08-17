@@ -6,6 +6,15 @@ trap 'echo "[ERROR] Installation failed on line $LINENO" >&2' ERR
 # Default installation directory
 INSTALL_DIR="${1:-$HOME/chatagent}"
 
+# Repository to clone (can be overridden by second argument)
+REPO_URL="${2:-https://github.com/OWNER/REPO.git}"
+
+# Validate repository URL to avoid cloning the GitHub root
+if [[ ! "$REPO_URL" =~ ^https://github\.com/.+/.+\.git$ ]]; then
+  echo "[ERROR] Invalid repository URL: $REPO_URL" >&2
+  exit 1
+fi
+
 # Determine whether sudo is needed
 if command -v sudo >/dev/null 2>&1; then
   SUDO="sudo"
@@ -29,7 +38,7 @@ fi
 
 # Clone repository if not already present
 if [ ! -d "$INSTALL_DIR/.git" ]; then
-  git clone https://github.com/OWNER/REPO.git "$INSTALL_DIR" || { echo "[ERROR] git clone failed" >&2; exit 1; }
+  git clone "$REPO_URL" "$INSTALL_DIR" || { echo "[ERROR] git clone failed" >&2; exit 1; }
 else
   echo "Repository already present at $INSTALL_DIR, skipping clone."
 fi

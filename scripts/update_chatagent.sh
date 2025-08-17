@@ -6,12 +6,27 @@ trap 'echo "[ERROR] Update failed on line $LINENO" >&2' ERR
 # Default installation directory
 INSTALL_DIR="${1:-$HOME/chatagent}"
 
+# Optional repository URL to ensure correct remote
+REPO_URL="${2:-}"
+
+if [[ -n "$REPO_URL" ]]; then
+  if [[ ! "$REPO_URL" =~ ^https://github\.com/.+/.+\.git$ ]]; then
+    echo "[ERROR] Invalid repository URL: $REPO_URL" >&2
+    exit 1
+  fi
+fi
+
 if [ ! -d "$INSTALL_DIR/.git" ]; then
   echo "[ERROR] ChatAgent is not installed in $INSTALL_DIR" >&2
   exit 1
 fi
 
 cd "$INSTALL_DIR" || { echo "[ERROR] cannot access $INSTALL_DIR" >&2; exit 1; }
+
+if [[ -n "$REPO_URL" ]]; then
+  git remote set-url origin "$REPO_URL" || { echo "[ERROR] failed to set remote URL" >&2; exit 1; }
+fi
+
 git pull || { echo "[ERROR] git pull failed" >&2; exit 1; }
 
 if [ ! -d backend/.venv ]; then
