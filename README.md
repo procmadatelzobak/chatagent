@@ -23,3 +23,12 @@ chatagent serve
 - Token/cost accounting, embeddings, retrieval, and richer UI are prepared to be added next.
 
 See [docs/project-vision.md](docs/project-vision.md) for full project goals and conversation log.
+
+## LLM integration
+
+The backend uses a pluggable `LLMClient` interface for all model calls. By
+default an `EchoLLMClient` is used which simply returns the provided prompt, so
+the project works without any API keys. To experiment with a real provider you
+can implement another `LLMClient` (e.g. using OpenAI or Gemini) and set
+`CHATAGENT_LLM_PROVIDER` in the environment to select it. The existing
+`GoogleLLMClient` demonstrates this pattern.
