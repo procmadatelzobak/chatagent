@@ -1,9 +1,8 @@
-
 # ChatAgent MVP
 
 ![CI Lint](https://github.com/OWNER/REPO/actions/workflows/ci-lint.yml/badge.svg)
 ![CI Test](https://github.com/OWNER/REPO/actions/workflows/ci-test.yml/badge.svg)
-![CI Build](https://github.com/OWNER/REPO/actions/workflows/ci-build.yml/badge.svg)
+![CI Build](https://github.com/openai/chatagent/actions/workflows/ci-build.yml/badge.svg)
 
 - Backend: FastAPI
 - Storage: SQLite at `~/.chatagent/chatagent.sqlite3`
@@ -16,17 +15,16 @@ Work is at an early stage; see [Roadmap v0.1](../../issues/1) for planned improv
 
 ## Documentation
 
-See [the docs](docs/quickstart.md) for more details.
+See [the docs](docs/quickstart.md) for more details or browse the [documentation](docs/) for the full project.
 
 ## Quickstart
 
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate
-pip install -e .
+pip install -e .[dev]
 echo 'CHATAGENT_GOOGLE_API_KEY=YOUR_KEY' > .env
-chatagent serve
-# open http://localhost:8080
+chatagent serve  # open http://localhost:8080
 ```
 
 Run a quick demo using the mock LLM and a sample scenario:
@@ -68,10 +66,12 @@ To work on the project, install dependencies and run quality checks:
 pip install -e backend[dev]
 make lint
 make test
+
+# run tests explicitly
+PYTHONPATH=backend pytest
 ```
 
 Use `make format` to apply formatting.
-
 
 ## CI
 
@@ -81,9 +81,6 @@ The project uses GitHub Actions for automated checks:
 - **ci-test.yml** – executes the pytest test suite.
 - **ci-build.yml** – builds the Python package.
 
-
-
-
 ## Web UI
 
 A minimal control panel is served at `http://localhost:8080/`.
@@ -92,10 +89,9 @@ stepping through 1/10/100 ticks, and viewing the current tick and
 snapshot of the selected agent or world. The page uses vanilla
 HTML/JS and is delivered directly by FastAPI.
 
-
 ## Persistence
 
-Checkpoint and log data are stored under the repository's `data/` directory.  Utility
+Checkpoint and log data are stored under the repository's `data/` directory. Utility
 functions are provided for saving and loading checkpoints as well as exporting state
 for inspection:
 
@@ -116,7 +112,6 @@ export_state(world2, scheduler2, "logs/state.json")
 ```
 
 All paths are relative to `data/` and created on demand with filenames sanitized.
-
 
 ## Notes
 

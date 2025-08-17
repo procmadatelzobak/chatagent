@@ -30,9 +30,7 @@ def test_cli_run(tmp_path: Path) -> None:
         str(scenario_path),
     ]
     env = {"PYTHONPATH": str(Path(__file__).resolve().parents[1])}
-    res = subprocess.run(
-        cmd, capture_output=True, text=True, check=True, env=env
-    )
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True, env=env)
     lines = res.stdout.strip().splitlines()
     assert lines
     record = json.loads(lines[-1])

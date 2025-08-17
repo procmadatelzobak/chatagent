@@ -31,6 +31,7 @@ class Settings(BaseSettings):
     @classmethod
     def _expand_paths(cls, v: Path) -> Path:
         return v.expanduser()
+
     host: str = "0.0.0.0"
     port: int = 8080
     log_level: str = "INFO"
