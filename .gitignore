@@ -16,8 +16,12 @@ ENV/
 backend/.env
 backend/.venv/
 
+
 # Jupyter Notebook
 .ipynb_checkpoints/
 
 # Pytest
 .pytest_cache/
+
+site/
+

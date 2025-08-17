@@ -1,6 +1,10 @@
 
 # ChatAgent MVP
 
+![CI Lint](https://github.com/OWNER/REPO/actions/workflows/ci-lint.yml/badge.svg)
+![CI Test](https://github.com/OWNER/REPO/actions/workflows/ci-test.yml/badge.svg)
+![CI Build](https://github.com/OWNER/REPO/actions/workflows/ci-build.yml/badge.svg)
+
 - Backend: FastAPI
 - Storage: SQLite at `~/.chatagent/chatagent.sqlite3`
 - Projects workspace: `/home/sandbox/chatagent/projects`
@@ -9,6 +13,10 @@
 ## Project Status
 
 Work is at an early stage; see [Roadmap v0.1](../../issues/1) for planned improvements and current progress.
+
+## Documentation
+
+See [the docs](docs/quickstart.md) for more details.
 
 ## Quickstart
 
@@ -20,6 +28,27 @@ echo 'CHATAGENT_GOOGLE_API_KEY=YOUR_KEY' > .env
 chatagent serve
 # open http://localhost:8080
 ```
+
+## Development
+
+To work on the project, install dependencies and run quality checks:
+
+```bash
+pip install -e backend[dev]
+make lint
+make test
+```
+
+Use `make format` to apply formatting.
+
+
+## CI
+
+The project uses GitHub Actions for automated checks:
+
+- **ci-lint.yml** – runs Ruff and Black to lint and check formatting.
+- **ci-test.yml** – executes the pytest test suite.
+- **ci-build.yml** – builds the Python package.
 
 
 
