@@ -17,6 +17,30 @@ chatagent serve
 # open http://localhost:8080
 ```
 
+## Persistence
+
+Checkpoint and log data are stored under the repository's `data/` directory.  Utility
+functions are provided for saving and loading checkpoints as well as exporting state
+for inspection:
+
+```python
+from chatagent.services.persistence import save_checkpoint, load_checkpoint, export_state
+
+world = {"agents": ["alpha"]}
+scheduler = {"tasks": []}
+
+# store objects under data/checkpoints/run.pkl
+save_checkpoint(world, scheduler, "checkpoints/run.pkl")
+
+# later, reconstruct them
+world2, scheduler2 = load_checkpoint("checkpoints/run.pkl")
+
+# write human‑readable JSON logs
+export_state(world2, scheduler2, "logs/state.json")
+```
+
+All paths are relative to `data/` and created on demand with filenames sanitized.
+
 ## Notes
 
 - This is a minimal skeleton: outer worker enqueues a dummy init task; inner worker initializes a git repo and README.
