@@ -29,6 +29,21 @@ chatagent serve
 # open http://localhost:8080
 ```
 
+## Docker
+
+Build and run the API in a container:
+
+```bash
+docker build -t chatagent .
+docker run -p 8080:8080 chatagent
+```
+
+Or start with Docker Compose:
+
+```bash
+docker compose up --build
+```
+
 ## Development
 
 To work on the project, install dependencies and run quality checks:

@@ -56,7 +56,17 @@ Added CodeQL analysis workflow for Python to run on pushes, pull requests, and w
 
 ## Testing
 - `pytest` (fails: missing dependencies during collection)
+# Dev Environment and Docker
 
+## Summary
+- Added a `.devcontainer` configuration to provide a reproducible Python 3.11 environment with linters and pytest.
+- Created a `Dockerfile` and `docker-compose.yml` for running the API in containers.
+- Introduced a CI workflow to build the Docker image on pushes and pull requests.
+
+## Testing
+- `make lint`
+- `make test`
+- `docker build .`
 
 ## Domain and Module Boundaries
 - Added `docs/DOMAIN.md` detailing core entities and relationships.
