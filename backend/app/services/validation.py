@@ -19,6 +19,30 @@ def load_schema(schema_path: Path = DEFAULT_SCHEMA) -> dict[str, Any]:
     return json.loads(schema_path.read_text())
 
 
+def validate_scenario(data: dict[str, Any], schema_path: Path = DEFAULT_SCHEMA) -> list[dict[str, str]]:
+    """Validate in-memory scenario data against the simulation schema.
+
+    Args:
+        data: Scenario data loaded from JSON.
+        schema_path: Path to the JSON schema for the scenario.
+
+    Returns:
+        A list of validation errors. Each error is a mapping with ``path`` and
+        ``message`` keys describing the failing location and the reason. An empty
+        list means the payload is valid.
+    """
+
+    schema = load_schema(schema_path)
+    resolver = RefResolver(base_uri=schema_path.parent.as_uri() + "/", referrer=schema)
+    validator = Draft7Validator(schema, resolver=resolver)
+
+    errors = sorted(validator.iter_errors(data), key=lambda e: e.path)
+    return [
+        {"path": ".".join(str(p) for p in error.path), "message": error.message}
+        for error in errors
+    ]
+
+
 def validate_scenario_file(data_path: Path, schema_path: Path = DEFAULT_SCHEMA) -> None:
     """Validate a scenario file against the simulation configuration schema.
 
@@ -31,12 +55,7 @@ def validate_scenario_file(data_path: Path, schema_path: Path = DEFAULT_SCHEMA) 
     """
 
     data = json.loads(data_path.read_text())
-    schema = load_schema(schema_path)
-    resolver = RefResolver(base_uri=schema_path.parent.as_uri() + "/", referrer=schema)
-    validator = Draft7Validator(schema, resolver=resolver)
-
-    errors = sorted(validator.iter_errors(data), key=lambda e: e.path)
+    errors = validate_scenario(data, schema_path=schema_path)
     if errors:
         error = errors[0]
-        path = ".".join(str(p) for p in error.path)
-        raise ScenarioValidationError(f"{error.message} at path: {path}")
+        raise ScenarioValidationError(f"{error['message']} at path: {error['path']}")

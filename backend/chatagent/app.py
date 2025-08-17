@@ -1,5 +1,6 @@
 import asyncio
 from pathlib import Path
+
 from fastapi import APIRouter, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
@@ -7,22 +8,22 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from .agents import outer
-
 from .agents.inner import worker_loop
 from .db.core import init_db
-from .providers.google import GoogleProvider
 from app.services.validation import (
     ScenarioValidationError,
+    validate_scenario,
     validate_scenario_file,
 )
-
 from .providers.google import GoogleLLMClient
 from .services.llm import EchoLLMClient, LLMClient
 from .settings import settings
 
 
 app = FastAPI(title="ChatAgent MVP", version="0.1.0")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
+)
 
 base_dir = Path(__file__).resolve().parent.parent / "app"
 templates = Jinja2Templates(directory=str(base_dir / "templates"))
@@ -78,13 +79,19 @@ async def chat(payload: dict) -> dict:
 
 
 @router.get("/validate-scenario")
-async def validate_scenario() -> dict:
+async def validate_sample_scenario() -> dict:
     scenario_path = Path(__file__).resolve().parents[1] / "data" / "scenario_example.json"
     try:
         validate_scenario_file(scenario_path)
     except ScenarioValidationError as exc:
         return {"valid": False, "error": str(exc)}
     return {"valid": True}
+
+
+@router.post("/validate-scenario")
+async def validate_scenario_payload(payload: dict) -> dict:
+    errors = validate_scenario(payload)
+    return {"ok": not errors, "errors": errors}
 
 
 app.include_router(router, prefix="/api")
