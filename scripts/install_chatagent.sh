@@ -3,8 +3,8 @@ set -Eeuo pipefail
 
 # === Nastavení ===
 # Repo můžeš přepsat env proměnnou CHATAGENT_REPO (formát owner/repo nebo plná URL)
-# Př.: CHATAGENT_REPO="procmadatelzobak/chatsimulator"
-REPO_INPUT="${CHATAGENT_REPO:-procmadatelzobak/chatsimulator}"
+# Př.: CHATAGENT_REPO="procmadatelzobak/chatagent"
+REPO_INPUT="${CHATAGENT_REPO:-procmadatelzobak/chatagent}"
 BRANCH="${CHATAGENT_BRANCH:-main}"
 TARGET_DIR="${CHATAGENT_DIR:-$HOME/chatagent}"
 
