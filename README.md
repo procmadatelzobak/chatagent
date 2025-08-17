@@ -1,6 +1,10 @@
 
 # ChatAgent MVP
 
+![CI Lint](https://github.com/OWNER/REPO/actions/workflows/ci-lint.yml/badge.svg)
+![CI Test](https://github.com/OWNER/REPO/actions/workflows/ci-test.yml/badge.svg)
+![CI Build](https://github.com/OWNER/REPO/actions/workflows/ci-build.yml/badge.svg)
+
 - Backend: FastAPI
 - Storage: SQLite at `~/.chatagent/chatagent.sqlite3`
 - Projects workspace: `/home/sandbox/chatagent/projects`
@@ -32,6 +36,15 @@ make test
 ```
 
 Use `make format` to apply formatting.
+
+
+## CI
+
+The project uses GitHub Actions for automated checks:
+
+- **ci-lint.yml** – runs Ruff and Black to lint and check formatting.
+- **ci-test.yml** – executes the pytest test suite.
+- **ci-build.yml** – builds the Python package.
 
 
 
