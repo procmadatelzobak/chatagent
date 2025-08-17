@@ -1,45 +1,77 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 
-trap 'echo "[ERROR] Installation failed on line $LINENO" >&2' ERR
+# === Nastavení ===
+# Repo můžeš přepsat env proměnnou CHATAGENT_REPO (formát owner/repo nebo plná URL)
+# Př.: CHATAGENT_REPO="procmadatelzobak/chatagent"
+REPO_INPUT="${CHATAGENT_REPO:-procmadatelzobak/chatagent}"
+BRANCH="${CHATAGENT_BRANCH:-main}"
+TARGET_DIR="${CHATAGENT_DIR:-$HOME/chatagent}"
 
-# Default installation directory
-INSTALL_DIR="${1:-$HOME/chatagent}"
-
-# Determine whether sudo is needed
-if command -v sudo >/dev/null 2>&1; then
-  SUDO="sudo"
+# === Normalizace URL na HTTPS bez přihlašování ===
+if [[ "$REPO_INPUT" =~ ^https?:// ]]; then
+  # plná URL -> očistit o trailing slash a doplnit .git, pokud chybí
+  REPO_URL="${REPO_INPUT%/}"
+  [[ "$REPO_URL" != *.git ]] && REPO_URL="${REPO_URL}.git"
 else
-  SUDO=""
+  # owner/repo -> složit na https
+  REPO_URL="https://github.com/${REPO_INPUT%/}"
+  [[ "$REPO_URL" != *.git ]] && REPO_URL="${REPO_URL}.git"
 fi
 
-required_packages=(git python3 python3-venv python3-pip build-essential)
-missing_packages=()
-for pkg in "${required_packages[@]}"; do
-  dpkg -s "$pkg" >/dev/null 2>&1 || missing_packages+=("$pkg")
-done
+export GIT_TERMINAL_PROMPT=0
+export GIT_ASKPASS=/bin/true
 
-if [ ${#missing_packages[@]} -ne 0 ]; then
-  echo "Installing missing packages: ${missing_packages[*]}"
-  $SUDO apt-get update || { echo "[ERROR] apt-get update failed" >&2; exit 1; }
-  $SUDO apt-get install -y "${missing_packages[@]}" || { echo "[ERROR] package installation failed" >&2; exit 1; }
+echo "Repozitář: $REPO_URL"
+echo "Větev:     $BRANCH"
+echo "Cíl:       $TARGET_DIR"
+echo
+
+# === Závislosti ===
+if ! command -v git >/dev/null 2>&1; then
+  echo "Instaluji git…"
+  sudo apt-get update -y
+  sudo apt-get install -y git ca-certificates
+fi
+
+mkdir -p "$(dirname "$TARGET_DIR")"
+
+# === Rychlá validace dostupnosti repozitáře (veřejnost / překlep) ===
+echo "Kontroluji dostupnost repozitáře…"
+TMP_ERR="$(mktemp)"
+if ! git ls-remote --exit-code "$REPO_URL" >/dev/null 2>"$TMP_ERR"; then
+  echo "❌ Nelze načíst repozitář: $REPO_URL"
+  if grep -qi "Repository not found" "$TMP_ERR"; then
+    echo "   → GitHub vrací 'Repository not found'. Obvykle jde o překlep v owner/repo nebo repo neexistuje."
+  elif grep -qi "Authentication failed" "$TMP_ERR"; then
+    echo "   → 'Authentication failed' u veřejného repa většinou také značí špatnou URL (překlep / jiné jméno)."
+  else
+    echo "   → Detail chyby:"
+    sed 's/^/      /' "$TMP_ERR" || true
+  fi
+  rm -f "$TMP_ERR"
+  exit 1
+fi
+rm -f "$TMP_ERR"
+
+# === Klonování / aktualizace ===
+if [ -d "$TARGET_DIR/.git" ]; then
+  echo "Repo už existuje, aktualizuji…"
+  git -C "$TARGET_DIR" remote set-url origin "$REPO_URL"
+  git -C "$TARGET_DIR" fetch --depth=1 origin
+  # Pokus o přepnutí na požadovanou větev, pokud existuje
+  if git -C "$TARGET_DIR" rev-parse --verify --quiet "origin/$BRANCH"; then
+    git -C "$TARGET_DIR" checkout -B "$BRANCH" "origin/$BRANCH"
+  else
+    echo "Pozn.: Větev '$BRANCH' na originu neexistuje, ponechávám výchozí."
+  fi
 else
-  echo "All required packages already installed."
+  echo "Klonuji…"
+  git clone --filter=blob:none --depth=1 "$REPO_URL" "$TARGET_DIR"
+  # Po klonu přepnout na požadovanou větev, pokud existuje
+  if git -C "$TARGET_DIR" rev-parse --verify --quiet "origin/$BRANCH"; then
+    git -C "$TARGET_DIR" checkout -B "$BRANCH" "origin/$BRANCH"
+  fi
 fi
 
-# Clone repository if not already present
-if [ ! -d "$INSTALL_DIR/.git" ]; then
-  git clone https://github.com/OWNER/REPO.git "$INSTALL_DIR" || { echo "[ERROR] git clone failed" >&2; exit 1; }
-else
-  echo "Repository already present at $INSTALL_DIR, skipping clone."
-fi
-
-# Set up virtual environment and install package
-cd "$INSTALL_DIR/backend" || { echo "[ERROR] backend directory missing" >&2; exit 1; }
-if [ ! -d .venv ]; then
-  python3 -m venv .venv || { echo "[ERROR] virtual environment creation failed" >&2; exit 1; }
-fi
-source .venv/bin/activate || { echo "[ERROR] failed to activate virtual environment" >&2; exit 1; }
-pip install -e . || { echo "[ERROR] pip install failed" >&2; exit 1; }
-
-echo "ChatAgent installed in $INSTALL_DIR"
+echo "✅ Hotovo."
