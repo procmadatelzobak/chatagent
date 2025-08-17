@@ -8,12 +8,14 @@ from typing import Optional
 @dataclass
 class WorldState:
     """Simple container for world state."""
+
     counter: int = 0
 
 
 @dataclass
 class Event:
     """Represents an action to be applied to the world."""
+
     name: str
     amount: Optional[int] = None
     max_value: Optional[int] = None

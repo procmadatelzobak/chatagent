@@ -25,3 +25,5 @@ backend/.venv/
 
 site/
 
+.DS_Store
+

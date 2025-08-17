@@ -11,10 +11,12 @@ else:
     db_url = f"sqlite:///{settings.db}"
 engine = create_engine(db_url, connect_args={"check_same_thread": False})
 
+
 def init_db() -> None:
     if not getattr(settings, "db_in_memory", False):
         settings.db.parent.mkdir(parents=True, exist_ok=True)
     SQLModel.metadata.create_all(engine)
+
 
 def get_session() -> Session:
     return Session(engine)

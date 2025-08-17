@@ -1,6 +1,5 @@
 from time import sleep
 
-import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import select
 
