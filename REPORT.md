@@ -85,3 +85,13 @@ Added CodeQL analysis workflow for Python to run on pushes, pull requests, and w
 - Added `docs/DOMAIN.md` detailing core entities and relationships.
 - Drafted RFC `docs/rfcs/0001-module-boundaries.md` proposing incremental refactor steps toward a modular layout.
 
+
+## Conversation Engine
+
+- Introduced `Agent` interface with `decide`, `receive`, and `state` methods.
+- Implemented deterministic `RuleBasedAgent` to enable simulation without an LLM.
+- Added tick-based `ConversationEngine` orchestrating message exchange for a scenario.
+- Provided unit test with fixed seed data to validate the conversation flow.
+
+## Testing
+- Tests not executed locally per task instructions.
