@@ -42,3 +42,9 @@
 - `pytest` (fails: missing dependencies during collection)
 
 
+## Config, Logging, and Error Handling
+
+- Added `config.toml` and extended `Settings` to load from file and environment.
+- Implemented JSON structured logging with optional PII redaction.
+- Introduced centralized error handler with custom error types.
+- Added unit tests covering configuration loading, logging redaction, and error responses.

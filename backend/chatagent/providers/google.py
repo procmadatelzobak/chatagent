@@ -1,7 +1,8 @@
 import httpx
 
-from ..settings import settings
+from ..errors import ProviderError
 from ..services.llm import LLMClient
+from ..settings import settings
 
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
@@ -12,6 +13,8 @@ class GoogleLLMClient(LLMClient):
     def __init__(self, model: str | None = None):
         self.model = model or settings.model_default
         self.api_key = settings.google_api_key
+        if not self.api_key:
+            raise ProviderError("Missing Google API key")
 
     async def predict(self, prompt: str) -> str:
         data = await self.chat([{"role": "user", "content": prompt}])

@@ -8,9 +8,14 @@ from typing import Any
 
 from jsonschema import Draft7Validator, RefResolver
 
-DEFAULT_SCHEMA = Path(__file__).resolve().parents[1] / "schemas" / "simulation_config.schema.json"
+from chatagent.errors import ChatAgentError
 
-class ScenarioValidationError(Exception):
+DEFAULT_SCHEMA = (
+    Path(__file__).resolve().parents[1] / "schemas" / "simulation_config.schema.json"
+)
+
+
+class ScenarioValidationError(ChatAgentError):
     """Raised when a scenario file does not match the JSON schema."""
 
 
@@ -19,7 +24,9 @@ def load_schema(schema_path: Path = DEFAULT_SCHEMA) -> dict[str, Any]:
     return json.loads(schema_path.read_text())
 
 
-def validate_scenario(data: dict[str, Any], schema_path: Path = DEFAULT_SCHEMA) -> list[dict[str, str]]:
+def validate_scenario(
+    data: dict[str, Any], schema_path: Path = DEFAULT_SCHEMA
+) -> list[dict[str, str]]:
     """Validate in-memory scenario data against the simulation schema.
 
     Args:
