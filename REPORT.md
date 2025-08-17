@@ -85,9 +85,31 @@ Added CodeQL analysis workflow for Python to run on pushes, pull requests, and w
 - Added `docs/DOMAIN.md` detailing core entities and relationships.
 - Drafted RFC `docs/rfcs/0001-module-boundaries.md` proposing incremental refactor steps toward a modular layout.
 
+
 ## Scenario Specification and Parser
 
 - Defined simulation scenario format and JSON schema in `docs/SCENARIO_SPEC.md`.
 - Implemented Pydantic parser in `core/scenario` to load JSON or YAML files.
 - Added example scenarios and validation tests.
+
+
+# LLM Adapters
+
+## Summary
+- Introduced a pluggable `LLMProvider` interface and `MockLLM` for tests.
+- Added an `OpenAILLM` skeleton adapter loading its API key from `OPENAI_API_KEY`.
+- Expanded test suite with mock-based tests for the new adapters.
+
+## Testing
+- `python -m ruff check adapters tests/adapters`
+- `python -m black --check adapters tests/adapters`
+- `python -m pytest tests/adapters/test_llm.py`
+
+
+
+## Memory and Metrics
+- Introduced in-memory conversation store with timestamp, speaker, content, and metadata.
+- Added metric computation for turns, average message length, and goal achievement via pluggable evaluator.
+- Covered basic flow with unit test simulating a short conversation.
+
 
