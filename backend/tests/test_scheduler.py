@@ -1,5 +1,5 @@
-from app.services.scheduler import Scheduler
-from app.services.world import World, Event
+from chatagent.services.scheduler import Scheduler
+from chatagent.services.world import World, Event
 
 
 def test_stepping():

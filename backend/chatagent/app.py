@@ -10,8 +10,7 @@ from .agents import outer
 
 from .agents.inner import worker_loop
 from .db.core import init_db
-from .providers.google import GoogleProvider
-from app.services.validation import (
+from chatagent.services.validation import (
     ScenarioValidationError,
     validate_scenario_file,
 )
@@ -24,7 +23,7 @@ from .settings import settings
 app = FastAPI(title="ChatAgent MVP", version="0.1.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-base_dir = Path(__file__).resolve().parent.parent / "app"
+base_dir = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(base_dir / "templates"))
 app.mount("/static", StaticFiles(directory=str(base_dir / "static")), name="static")
 

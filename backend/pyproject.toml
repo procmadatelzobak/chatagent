@@ -29,3 +29,6 @@ dependencies = [
 ]
 [project.scripts]
 chatagent = "chatagent.cli:app"
+
+[tool.setuptools]
+packages = ["chatagent"]
