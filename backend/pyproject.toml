@@ -53,3 +53,5 @@ select = ["E", "F", "I"]
 [tool.setuptools.packages.find]
 # Include the lightweight adapter utilities so tests can import them.
 include = ["app*", "chatagent*", "adapters*"]
+include = ["chatagent", "app*", "adapters*"]
+exclude = ["data*", "systemd*", "tests*"]
