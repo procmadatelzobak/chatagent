@@ -1,0 +1,10 @@
+{
+  "packages": {
+    "backend": {
+      "release-type": "python",
+      "package-name": "chatagent",
+      "changelog-path": "../CHANGELOG.md",
+      "include-component-in-tag": false
+    }
+  }
+}
