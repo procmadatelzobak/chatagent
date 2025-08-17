@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     workspace: Path = Path("~/sandbox/chatagent/projects").expanduser()
     google_api_key: str | None = None
     model_default: str = "gemini-1.5-flash"
+    llm_provider: str = "echo"
     host: str = "0.0.0.0"
     port: int = 8080
 
