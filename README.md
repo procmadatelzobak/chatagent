@@ -21,6 +21,18 @@ chatagent serve
 # open http://localhost:8080
 ```
 
+## Development
+
+To work on the project, install dependencies and run quality checks:
+
+```bash
+pip install -e backend[dev]
+make lint
+make test
+```
+
+Use `make format` to apply formatting.
+
 
 
 
