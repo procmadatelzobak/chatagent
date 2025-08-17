@@ -23,6 +23,11 @@
 - Configured GitHub Actions workflow to run linting and tests.
 - Documented development workflow in the README.
 
+## Test Coverage
+
+- Introduced pytest coverage reporting with a 40% minimum threshold in CI.
+- Added characterization tests for the `World` service and documented testing conventions.
+
 
 # CI Setup Report
 

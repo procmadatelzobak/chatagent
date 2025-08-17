@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+sqlmodel
+aiosqlite
+jinja2
+python-dotenv
+httpx
+websockets
+starlette
+typer
+colorama
+rich
+jsonschema
+pytest
+pytest-cov
