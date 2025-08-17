@@ -1,0 +1,11 @@
+site_name: ChatAgent
+theme:
+  name: material
+nav:
+  - Quickstart: quickstart.md
+  - Architecture: architecture.md
+  - Contributing: contributing.md
+  - Changelog: changelog.md
+  - Project Vision: project-vision.md
+  - System Prompt (inner): system-prompt-inner.md
+  - System Prompt (outer): system-prompt-outer.md

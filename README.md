@@ -10,6 +10,10 @@
 
 Work is at an early stage; see [Roadmap v0.1](../../issues/1) for planned improvements and current progress.
 
+## Documentation
+
+See [the docs](docs/quickstart.md) for more details.
+
 ## Quickstart
 
 ```bash
