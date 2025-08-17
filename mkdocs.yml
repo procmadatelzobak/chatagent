@@ -1,9 +1,23 @@
 site_name: ChatAgent
 theme:
   name: material
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [backend]
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
 nav:
   - Quickstart: quickstart.md
-  - Architecture: architecture.md
+  - Architecture: ARCHITECTURE.md
+  - API Reference: api.md
   - Contributing: contributing.md
   - Changelog: changelog.md
   - Project Vision: project-vision.md
