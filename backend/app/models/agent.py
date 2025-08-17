@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class Agent(BaseModel):
     """Represents an actor participating in the simulation."""
 

@@ -2,8 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from app.services.validation import validate_scenario_file, ScenarioValidationError
-
+from app.services.validation import ScenarioValidationError, validate_scenario_file
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 

@@ -1,0 +1,32 @@
+name: examples-smoke
+
+on:
+  push:
+    paths:
+      - 'examples/**'
+      - '.github/workflows/examples-smoke.yml'
+  pull_request:
+    paths:
+      - 'examples/**'
+      - '.github/workflows/examples-smoke.yml'
+
+jobs:
+  run-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install backend
+        run: |
+          cd backend
+          pip install -e .
+      - name: Run quick demo
+        run: |
+          bash examples/quick_demo.sh
+      - name: Run scenarios
+        run: |
+          chatsim run --scenario examples/simple.json
+          chatsim run --scenario examples/multi_agents.json
+          chatsim run --scenario examples/evaluator.json

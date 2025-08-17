@@ -1,11 +1,12 @@
 import asyncio
 import subprocess
 import sys
-from pathlib import Path
+
 from sqlmodel import select
-from ..settings import settings
+
 from ..db.core import get_session
 from ..db.models import Task
+from ..settings import settings
 
 WORKSPACE = settings.workspace
 

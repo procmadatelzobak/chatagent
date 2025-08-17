@@ -4,11 +4,12 @@ from typing import Callable, Dict, Iterable
 
 from .store import MemoryItem, MemoryStore
 
-
 Evaluator = Callable[[Iterable[MemoryItem]], bool]
 
 
-def compute_metrics(store: MemoryStore, evaluator: Evaluator) -> Dict[str, float | bool]:
+def compute_metrics(
+    store: MemoryStore, evaluator: Evaluator
+) -> Dict[str, float | bool]:
     """Calculate basic conversation metrics."""
 
     messages = list(store.items())

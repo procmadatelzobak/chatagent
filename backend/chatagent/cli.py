@@ -1,5 +1,7 @@
 
-import typer, uvicorn
+import typer
+import uvicorn
+
 from .settings import settings
 
 app = typer.Typer()

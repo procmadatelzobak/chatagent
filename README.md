@@ -29,6 +29,12 @@ chatagent serve
 # open http://localhost:8080
 ```
 
+Run a quick demo using the mock LLM and a sample scenario:
+
+```bash
+bash examples/quick_demo.sh
+```
+
 ## Usage
 
 Run simulations without the web UI:

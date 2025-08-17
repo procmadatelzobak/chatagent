@@ -1,0 +1,18 @@
+{
+  "world": {
+    "description": "Single agent saying hello",
+    "agents": [
+      {"id": "u1", "name": "User", "role": "user"}
+    ]
+  },
+  "events": [
+    {
+      "timestamp": 0,
+      "agent_id": "u1",
+      "intent": {
+        "name": "inc",
+        "parameters": {"amount": 1}
+      }
+    }
+  ]
+}

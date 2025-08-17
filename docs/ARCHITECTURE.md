@@ -4,6 +4,14 @@
 
 The system will consist of a FastAPI backend exposing REST and WebSocket interfaces, a scheduler driving agent simulations, and optional web and CLI frontends.
 
+```mermaid
+graph TD
+    C[Client] --> A[API Service]
+    A --> S[Scheduler]
+    S --> D[Agents]
+    S --> P[Persistence]
+```
+
 ## Components
 
 - **API Service**: Handles HTTP requests, WebSocket connections, and scenario validation.
