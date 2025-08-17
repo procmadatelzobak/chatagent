@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from core.scenario import load_scenario, Scenario  # noqa: E402
+from core.scenario import Scenario, load_scenario  # noqa: E402
 
 EXAMPLES = ROOT / "examples" / "scenarios"
 

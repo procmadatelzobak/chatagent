@@ -1,5 +1,7 @@
-from app.services.world import World, Event
 import random
+
+from app.services.world import Event, World
+
 
 def test_apply_inc() -> None:
     world = World()
