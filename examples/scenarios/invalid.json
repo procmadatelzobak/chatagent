@@ -1,0 +1,7 @@
+{
+  "description": "Broken scenario",
+  "agents": [
+    {"id": "a1", "name": "Alice", "role": "user"},
+    {"id": "a2", "name": "Bot", "goals": ["assist"]}
+  ]
+}
