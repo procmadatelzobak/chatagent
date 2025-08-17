@@ -11,3 +11,9 @@ Introduced configuration options to improve testability and responsiveness:
 
 - Added validation and configurable repository URL to `scripts/install_chatagent.sh` and `scripts/update_chatagent.sh` to prevent cloning the GitHub root when repository parameters are missing.
 
+## Auto-run ChatAgent after installation
+
+- Default repository URL in scripts now uses the full HTTPS link.
+- Added `scripts/run_chatagent.sh` to set up a virtual environment and start the server.
+- `scripts/install_chatagent.sh` now invokes the new run script after cloning to launch the application immediately.
+
