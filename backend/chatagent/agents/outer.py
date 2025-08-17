@@ -1,10 +1,14 @@
 from ..db.core import get_session
 from ..db.models import Project
 from .shared import add_message, add_task, summarize_context
+from ..services.llm import LLMClient
 
 SYSTEM_PROMPT = "Jsi vnější pracovník. Buď stručný, děl úkoly na malé dávky."
 
-async def handle_user_input(project_id: int, user_text: str, provider) -> str:
+
+async def handle_user_input(
+    project_id: int, user_text: str, llm: LLMClient
+) -> str:
     text_lower = user_text.lower()
     with get_session() as s:
         project = s.get(Project, project_id)
@@ -28,13 +32,9 @@ async def handle_user_input(project_id: int, user_text: str, provider) -> str:
                 "run_python hello.py",
             )
             return "Plán vytvořen. Spouštím vnitřního pracovníka."
-        summary = summarize_context(s, project_id)
-    messages = [{"role": "user", "content": user_text}]
-    data = await provider.chat(messages, system=SYSTEM_PROMPT + "\n" + summary)
-    if "candidates" in data:
-        reply = data["candidates"][0].get("content", "")
-    else:
-        reply = data["choices"][0]["message"]["content"]
+    summary = summarize_context(s, project_id)
+    prompt = SYSTEM_PROMPT + "\n" + summary
+    reply = await llm.predict(prompt)
     with get_session() as s:
         add_message(s, project_id, "outer", reply)
     return reply
