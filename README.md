@@ -22,6 +22,8 @@ chatagent serve
 ```
 
 
+
+
 ## Web UI
 
 A minimal control panel is served at `http://localhost:8080/`.
@@ -29,7 +31,8 @@ It allows selecting a scenario, playing or pausing the simulation,
 stepping through 1/10/100 ticks, and viewing the current tick and
 snapshot of the selected agent or world. The page uses vanilla
 HTML/JS and is delivered directly by FastAPI.
-=======
+
+
 ## Persistence
 
 Checkpoint and log data are stored under the repository's `data/` directory.  Utility
