@@ -1,0 +1,17 @@
+{
+  "description": "Demo scenario",
+  "roles": [
+    {"name": "user", "description": "Human participant"},
+    {"name": "assistant", "description": "Helpful AI assistant"}
+  ],
+  "tools": [
+    {"name": "search", "description": "Query external information"}
+  ],
+  "agents": [
+    {"id": "a1", "name": "Alice", "role": "user", "goals": ["greet everyone"]},
+    {"id": "a2", "name": "Bot", "role": "assistant"}
+  ],
+  "rules": [
+    {"trigger": "greet", "action": "reply_greeting"}
+  ]
+}
