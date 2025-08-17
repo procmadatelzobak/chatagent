@@ -29,6 +29,16 @@ chatagent serve
 # open http://localhost:8080
 ```
 
+## Usage
+
+Run simulations without the web UI:
+
+```bash
+chatsim run --scenario backend/data/scenario_example.json
+```
+
+Add `--report` to also generate a Markdown report under `reports/`.
+
 ## Docker
 
 Build and run the API in a container:
