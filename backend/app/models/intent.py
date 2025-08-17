@@ -1,5 +1,7 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 from pydantic import BaseModel, Field
+
 
 class Intent(BaseModel):
     """Desired action that an agent may perform."""

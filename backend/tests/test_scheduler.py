@@ -1,5 +1,5 @@
 from app.services.scheduler import Scheduler
-from app.services.world import World, Event
+from app.services.world import Event, World
 
 
 def test_stepping():

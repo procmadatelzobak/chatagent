@@ -6,7 +6,6 @@ import re
 from pathlib import Path
 from typing import Any, Tuple
 
-
 # Base directory for persisted data (checkpoints, exports, etc.)
 BASE_DATA_DIR = Path(__file__).resolve().parents[3] / "data"
 
@@ -52,5 +51,10 @@ def export_state(world: Any, scheduler: Any, path: str | Path) -> Path:
     """Export ``world`` and ``scheduler`` to a JSON file for logs/history."""
     file_path = _resolve_path(path)
     with file_path.open("w", encoding="utf-8") as f:
-        json.dump({"world": world, "scheduler": scheduler}, f, ensure_ascii=False, indent=2)
+        json.dump(
+            {"world": world, "scheduler": scheduler},
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
     return file_path
