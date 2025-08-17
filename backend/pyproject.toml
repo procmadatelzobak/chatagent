@@ -29,6 +29,7 @@ dependencies = [
 ]
 [project.scripts]
 chatagent = "chatagent.cli:app"
+chatsim = "chatagent.sim_cli:app"
 
 [project.optional-dependencies]
 dev = [

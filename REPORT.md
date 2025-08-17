@@ -85,3 +85,8 @@ Added CodeQL analysis workflow for Python to run on pushes, pull requests, and w
 - Added `docs/DOMAIN.md` detailing core entities and relationships.
 - Drafted RFC `docs/rfcs/0001-module-boundaries.md` proposing incremental refactor steps toward a modular layout.
 
+## CLI Tool
+
+- Introduced a `chatsim` command to run scenarios from the CLI and emit NDJSON logs.
+- Implemented optional `--report` flag to generate Markdown summaries in `reports/`.
+
