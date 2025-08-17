@@ -26,6 +26,7 @@ dependencies = [
     "tiktoken>=0.7",
     "faiss-cpu>=1.8.0.post1; platform_system!='Windows'",
     "jsonschema>=4.19",
+    "PyYAML>=6.0",
 ]
 [project.scripts]
 chatagent = "chatagent.cli:app"
