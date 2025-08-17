@@ -1,14 +1,27 @@
 import httpx
+
 from ..settings import settings
+from ..services.llm import LLMClient
 
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
-class GoogleProvider:
+
+class GoogleLLMClient(LLMClient):
+    """LLM client using Google Gemini API."""
+
     def __init__(self, model: str | None = None):
         self.model = model or settings.model_default
         self.api_key = settings.google_api_key
 
-    async def chat(self, messages: list[dict], tools=None, system: str | None = None) -> dict:
+    async def predict(self, prompt: str) -> str:
+        data = await self.chat([{"role": "user", "content": prompt}])
+        if "candidates" in data:
+            return data["candidates"][0].get("content", "")
+        return data["choices"][0]["message"]["content"]
+
+    async def chat(
+        self, messages: list[dict], tools=None, system: str | None = None
+    ) -> dict:
         if not self.api_key:
             text = "(stub)"
             if messages:

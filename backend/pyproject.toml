@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "chatagent"
 version = "0.1.0"
 description = "MVP of ChatAgent (outer/inner worker, SQLite memory, Google provider, shell tools)"
-authors = [{name="ChatAgent", email="dev@local"}]
+authors = [{name="ChatAgent", email="dev@example.com"}]
 requires-python = ">=3.10"
 dependencies = [
     "fastapi>=0.111",
