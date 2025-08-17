@@ -6,6 +6,10 @@
 - Projects workspace: `/home/sandbox/chatagent/projects`
 - Provider: Google Gemini (stubs) — set `CHATAGENT_GOOGLE_API_KEY` in `.env`
 
+## Project Status
+
+Work is at an early stage; see [Roadmap v0.1](../../issues/1) for planned improvements and current progress.
+
 ## Quickstart
 
 ```bash
