@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from pydantic import field_validator
 from pydantic_settings import (
     BaseSettings,
     SettingsConfigDict,
@@ -16,6 +17,20 @@ class Settings(BaseSettings):
     google_api_key: str | None = None
     model_default: str = "gemini-1.5-flash"
     llm_provider: str = "echo"
+    # Polling interval for the background worker in seconds.  Shorter values
+    # reduce the latency between a task being enqueued and it being executed.
+    # Can be overridden using the environment variable CHATAGENT_WORKER_POLL_INTERVAL.
+    worker_poll_interval: float = 1.0
+    # Use an in-memory SQLite database when set to True.  This is useful for
+    # running tests without requiring a writable filesystem.  When enabled,
+    # the database URL will be ``sqlite:///:memory:``.  Can be toggled via
+    # the environment variable CHATAGENT_DB_IN_MEMORY.
+    db_in_memory: bool = False
+
+    @field_validator("db", "workspace", mode="after")
+    @classmethod
+    def _expand_paths(cls, v: Path) -> Path:
+        return v.expanduser()
     host: str = "0.0.0.0"
     port: int = 8080
     log_level: str = "INFO"

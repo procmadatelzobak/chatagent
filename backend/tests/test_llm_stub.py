@@ -9,7 +9,6 @@ from chatagent.db.models import Memory, Message, Task
 from chatagent.services.llm import EchoLLMClient
 
 
-@pytest.mark.skip("requires writable database")
 def test_llm_stub_echo():
     init_db()
     with get_session() as s:
