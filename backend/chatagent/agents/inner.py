@@ -8,11 +8,13 @@ from ..db.core import get_session
 from ..db.models import Task
 from ..settings import settings
 
-WORKSPACE = settings.workspace
-
 async def worker_loop() -> None:
     while True:
-        await asyncio.sleep(1)
+        # Poll for queued tasks at a configurable interval.  A shorter poll
+        # interval improves responsiveness of the worker in tests and in
+        # production.  The default interval is defined in Settings and can be
+        # overridden via CHATAGENT_WORKER_POLL_INTERVAL.
+        await asyncio.sleep(settings.worker_poll_interval)
         with get_session() as s:
             task = s.exec(
                 select(Task).where(Task.status == "queued").order_by(Task.created_at)
@@ -25,7 +27,7 @@ async def worker_loop() -> None:
             task_id = task.id
             project_id = task.project_id
             task_input = task.input
-        proj_dir = WORKSPACE / str(project_id)
+        proj_dir = settings.workspace / str(project_id)
         proj_dir.mkdir(parents=True, exist_ok=True)
         status = "done"
         result = ""
