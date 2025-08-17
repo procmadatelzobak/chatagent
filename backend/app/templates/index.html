@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Simulation Control</title>
+  <style>
+    body { background:#000; color:#0f0; font-family: monospace; }
+    select, button { background:#020; color:#0f0; border:1px solid #060; margin:4px; }
+    #snapshot { background:#010; border:1px solid #050; padding:4px; height:200px; overflow:auto; white-space:pre-wrap; }
+  </style>
+</head>
+<body>
+  <div>
+    <label for="scenario">Scenario:</label>
+    <select id="scenario"></select>
+    <button id="play">Play</button>
+    <button id="pause">Pause</button>
+    <button id="step1">Step 1</button>
+    <button id="step10">Step 10</button>
+    <button id="step100">Step 100</button>
+  </div>
+  <div>Tick: <span id="tick">0</span></div>
+  <pre id="snapshot"></pre>
+  <script src="/static/app.js"></script>
+</body>
+</html>
