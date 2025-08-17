@@ -17,4 +17,10 @@ echo 'CHATAGENT_GOOGLE_API_KEY=YOUR_KEY' > .env
 chatagent serve
 ```
 
+3. See a quick demo using the mock LLM:
+
+```bash
+bash examples/quick_demo.sh
+```
+
 This page is a placeholder for a more detailed guide.

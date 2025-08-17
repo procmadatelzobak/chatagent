@@ -1,0 +1,27 @@
+{
+  "world": {
+    "description": "Two agents interacting",
+    "agents": [
+      {"id": "u1", "name": "User", "role": "user"},
+      {"id": "b1", "name": "Bot", "role": "assistant"}
+    ]
+  },
+  "events": [
+    {
+      "timestamp": 0,
+      "agent_id": "u1",
+      "intent": {
+        "name": "inc",
+        "parameters": {"amount": 1}
+      }
+    },
+    {
+      "timestamp": 1,
+      "agent_id": "b1",
+      "intent": {
+        "name": "inc",
+        "parameters": {"amount": 2}
+      }
+    }
+  ]
+}
