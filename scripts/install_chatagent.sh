@@ -2,22 +2,15 @@
 set -Eeuo pipefail
 
 # === Nastavení ===
-# Repo můžeš přepsat env proměnnou CHATAGENT_REPO (formát owner/repo nebo plná URL)
-# Př.: CHATAGENT_REPO="procmadatelzobak/chatagent"
-REPO_INPUT="${CHATAGENT_REPO:-procmadatelzobak/chatagent}"
+# Repo můžeš přepsat env proměnnou CHATAGENT_REPO (plná URL)
+# Př.: CHATAGENT_REPO="https://github.com/procmadatelzobak/chatagent.git"
+REPO_INPUT="${CHATAGENT_REPO:-https://github.com/procmadatelzobak/chatagent.git}"
 BRANCH="${CHATAGENT_BRANCH:-main}"
 TARGET_DIR="${CHATAGENT_DIR:-$HOME/chatagent}"
 
 # === Normalizace URL na HTTPS bez přihlašování ===
-if [[ "$REPO_INPUT" =~ ^https?:// ]]; then
-  # plná URL -> očistit o trailing slash a doplnit .git, pokud chybí
-  REPO_URL="${REPO_INPUT%/}"
-  [[ "$REPO_URL" != *.git ]] && REPO_URL="${REPO_URL}.git"
-else
-  # owner/repo -> složit na https
-  REPO_URL="https://github.com/${REPO_INPUT%/}"
-  [[ "$REPO_URL" != *.git ]] && REPO_URL="${REPO_URL}.git"
-fi
+REPO_URL="${REPO_INPUT%/}"
+[[ "$REPO_URL" != *.git ]] && REPO_URL="${REPO_URL}.git"
 
 export GIT_TERMINAL_PROMPT=0
 export GIT_ASKPASS=/bin/true
@@ -74,4 +67,5 @@ else
   fi
 fi
 
-echo "✅ Hotovo."
+echo "✅ Instalace dokončena, spouštím ChatAgent…"
+"$TARGET_DIR/scripts/run_chatagent.sh" "$TARGET_DIR"

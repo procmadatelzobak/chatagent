@@ -7,7 +7,7 @@ trap 'echo "[ERROR] Update failed on line $LINENO" >&2' ERR
 INSTALL_DIR="${1:-$HOME/chatagent}"
 
 # Optional repository URL to ensure correct remote
-REPO_URL="${2:-}"
+REPO_URL="${2:-https://github.com/procmadatelzobak/chatagent.git}"
 
 if [[ -n "$REPO_URL" ]]; then
   if [[ ! "$REPO_URL" =~ ^https://github\.com/.+/.+\.git$ ]]; then
